@@ -1,5 +1,12 @@
 #include "mecanum.h"
 
+void clearScreen(){
+#ifdef _WIN32
+    std::system("cls");
+#else
+    std::system("clear");
+#endif
+}
 int readPath(double* des_x_Ptr, double* des_y_Ptr, double* des_theta_Ptr, size_t& current_index){
     std::ifstream file("/home/ditrobotics/catkin_ws/src/freshMain/params/11project.yaml");
     if (!file.is_open()) {
