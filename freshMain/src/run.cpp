@@ -1,6 +1,6 @@
 #include "cmath"
 #include "iostream"
-#include "sys/time.h"
+#include <sys/time.h>
 
 #include "odometry.h"
 #include "mecanum.h"
@@ -11,9 +11,7 @@ double speed_Kp = 10, des_x, des_y, des_theta;
 double des_x_last = -1, des_y_last = -1, des_theta_last = -1;
 size_t current_index = 0;
 
-Odometry odometry;
-Mecanum mecanum;
-
+Mecanum mecanum(0, 0, 90);
 
 void Callback(const geometry_msgs::Twist::ConstPtr& ins_vel){
     mecanum.odometry.update(ins_vel);
@@ -25,7 +23,6 @@ int main(int argc, char **argv){
     ros::NodeHandle nh;
     ros::Publisher vel_pub = nh.advertise<geometry_msgs::Twist>("/cmd_vel", 1);
     ros::Subscriber pose_sub = nh.subscribe("/ins_vel",1,Callback);
-    mecanum.initPosition(0,0,90);
     while(ros::ok()){
         if(readPath(&des_x, &des_y, &des_theta, current_index))     break;
         std::cout<<current_index<<" : \t";

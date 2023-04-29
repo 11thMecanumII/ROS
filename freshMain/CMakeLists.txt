@@ -150,7 +150,7 @@ include_directories(
 ## same as for the library above
 # add_dependencies(${PROJECT_NAME}_node ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
 
-add_executable(run src/run.cpp src/mecanum.cpp)
+add_executable(run src/run.cpp src/mecanum.cpp src/odometry.cpp)
 target_link_libraries(run ${catkin_LIBRARIES} yaml-cpp)
 add_dependencies(run ${catkin_EXPORTED_TARGETS})
 # add_executable(mecanum src/mecanum.cpp)

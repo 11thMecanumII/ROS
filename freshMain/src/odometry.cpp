@@ -1,5 +1,7 @@
 #include "odometry.h"
 
+Odometry::Odometry(double x, double y, double theta):
+    x(x), y(y), theta(theta/180*PI){};
 void Odometry::update(const geometry_msgs::Twist::ConstPtr& ins_vel){
     current_time = ros::Time::now();
     dt = (current_time - last_time).toSec();
@@ -12,4 +14,3 @@ void Odometry::update(const geometry_msgs::Twist::ConstPtr& ins_vel){
     last_time = current_time;
     return;
 }
-
