@@ -7,7 +7,7 @@
 
 #define numOfPoints 12
 
-double speed_Kp = 3, des_x, des_y, des_theta;
+double speed_Kp = 10, des_x, des_y, des_theta;
 double des_x_last = -1, des_y_last = -1, des_theta_last = -1;
 size_t current_index = 0;
 
@@ -25,7 +25,6 @@ int main(int argc, char **argv){
     ros::NodeHandle nh;
     ros::Publisher vel_pub = nh.advertise<geometry_msgs::Twist>("/cmd_vel", 1);
     ros::Subscriber pose_sub = nh.subscribe("/ins_vel",1,Callback);
-    // ros::Subscriber fake_odometry = nh.subscribe("/cmd_vel",1,Callback);
     mecanum.initPosition(0,0,90);
     while(ros::ok()){
         if(readPath(&des_x, &des_y, &des_theta, current_index))     break;
@@ -38,13 +37,8 @@ int main(int argc, char **argv){
             while(!mecanum.if_reach && ros::ok()){
                 ros::spinOnce();
                 vel_pub.publish( mecanum.goTo(des_x, des_y, des_theta, speed_Kp) );
-                // if(mecanum.softStart == 10){
-                //     std::cout<<"\n";
-                //     ros::Duration(1).sleep();
-                // }
-                // mecanum.softStart++;        //fake odometry
                 mecanum.maxGS = 0;
-                // ros::Duration(0.1).sleep();
+                ros::Duration(0.02).sleep();    //50Hz
             }
             mecanum.if_reach = false;
             std::cout<<"\n\t\tarrive the ("<<current_index<<" th) destanation!\n\n";

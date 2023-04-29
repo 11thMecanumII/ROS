@@ -4,6 +4,7 @@
 #include "ros/ros.h"
 #include "geometry_msgs/Twist.h"
 #define PI 3.1415926
+#define wheelRadius 0.0498      //m
 
 class Odometry{
 private:

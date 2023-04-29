@@ -12,18 +12,17 @@
 #include <cstdlib>
 
 #define allowance 10e-3
-#define NSS 10 //num_of_SoftStart
+#define NSS 30 //num_of_SoftStart
 
 void clearScreen();
 class Mecanum{
 private:
     // double maxSpeed = 1.5645;       //m/s
-    double maxSpeed = 0.3;       //m/s
+    double maxSpeed = 0.6;       //m/s
     double limit;
     double X, Y, W;     //x-speed, y-speed, w:angular speed
     double GS[4];      //goalSpeed1 2 3 4 
     double scanRatio;
-    // double wheelRadius = 0.0498;      //m
 public:
     int softStart;
     double maxGS;
@@ -39,9 +38,6 @@ public:
         geometry_msgs::Twist speed;
         double diff_x, diff_y, diff_theta;
         
-        // diff_x = des_x - odometry.x;    speed.linear.x = (std::abs(diff_x) > allowance)?std::abs(speed_Kp) * diff_x:0;
-        // diff_y = des_y - odometry.y;    speed.linear.y = (std::abs(diff_y) > allowance)?std::abs(speed_Kp) * diff_y:0;
-        
         diff_x = des_x - odometry.x;    
         diff_y = des_y - odometry.y;    
         diff_theta = (des_theta/180*PI) - odometry.theta;
@@ -54,13 +50,6 @@ public:
         if(X == 0 && Y == 0 && W == 0){
             if_reach = true;
         }        
-
-        // diff_theta = (des_theta/180*PI) - odometry.theta;    
-        // while(std::abs(diff_theta) > PI)   diff_theta = (diff_theta > 0)?diff_theta - 2*PI:diff_theta + 2*PI;
-        // speed.angular.z = (std::abs(diff_theta) > allowance)?std::abs(speed_Kp) * diff_theta:0;
-
-        // limitLinearSpeed = (softStart < NSS)?softStart/NSS*maxLinearSpeed:maxLinearSpeed;
-        // limitAngularSpeed = (softStart < NSS)?softStart/NSS*maxAngularSpeed:maxAngularSpeed;
 
         limit = (softStart < NSS)?softStart/NSS*maxSpeed:maxSpeed;
         GS[0] = Y + X + W*0.152767;
@@ -82,13 +71,6 @@ public:
         speed.linear.y = Y;
         speed.angular.z = W;
 
-        // if(std::abs(speed.linear.x) > limitLinearSpeed)  speed.linear.x = (speed.linear.x > 0)?limitLinearSpeed:-1*limitLinearSpeed;
-        // if(std::abs(speed.linear.y) > limitLinearSpeed)  speed.linear.y = (speed.linear.y > 0)?limitLinearSpeed:-1*limitLinearSpeed;
-        // if(std::abs(speed.angular.z) > limitAngularSpeed)  speed.angular.z = (speed.angular.z > 0)?limitAngularSpeed:-1*limitAngularSpeed;
-        // if(std::abs(diff_x) <= allowance && std::abs(diff_y) <= allowance && std::abs(diff_theta) <= allowance)    if_reach = true;
-        
-        
-        
         std::cout<<std::fixed<<std::setprecision(0);
         std::cout<<softStart<<"\t";
         
@@ -97,8 +79,6 @@ public:
         std::cout<<"des("<<des_x<<","<<des_y<<","<<des_theta<<")\t";
         std::cout<<"odo("<<odometry.x<<","<<odometry.y<<","<<odometry.theta*180/PI<<")\t";
         std::cout<<"vel("<<speed.linear.x<<","<<speed.linear.y<<","<<speed.angular.z<<")\n";
-
-        // if(softStart % 1000 == 0)     clearScreen();
 
         return speed;
     }

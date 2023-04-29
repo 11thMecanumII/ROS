@@ -8,7 +8,8 @@ void clearScreen(){
 #endif
 }
 int readPath(double* des_x_Ptr, double* des_y_Ptr, double* des_theta_Ptr, size_t& current_index){
-    std::ifstream file("/home/ditrobotics/catkin_ws/src/freshMain/params/11project.yaml");
+    // std::ifstream file("/home/ditrobotics/catkin_ws/src/freshMain/params/11project.yaml");
+    std::ifstream file("/home/ditrobotics/catkin_ws/src/freshMain/params/test123.yaml");
     if (!file.is_open()) {
         std::cerr << "Error opening file!" << std::endl;
         return 1;
