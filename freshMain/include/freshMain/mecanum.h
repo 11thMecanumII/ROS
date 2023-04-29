@@ -9,20 +9,23 @@
 #include <vector>
 #include <yaml-cpp/yaml.h>
 #include <iomanip>
+#include <cstdlib>
 
 #define allowance 10e-3
 #define NSS 10 //num_of_SoftStart
+
+void clearScreen();
 class Mecanum{
 private:
     // double maxSpeed = 1.5645;       //m/s
-    double maxSpeed = 0.6;       //m/s
+    double maxSpeed = 0.3;       //m/s
     double limit;
     double X, Y, W;     //x-speed, y-speed, w:angular speed
     double GS[4];      //goalSpeed1 2 3 4 
     double scanRatio;
     // double wheelRadius = 0.0498;      //m
 public:
-    double softStart;
+    int softStart;
     double maxGS;
     Odometry odometry;
     Mecanum(){
@@ -94,6 +97,8 @@ public:
         std::cout<<"des("<<des_x<<","<<des_y<<","<<des_theta<<")\t";
         std::cout<<"odo("<<odometry.x<<","<<odometry.y<<","<<odometry.theta*180/PI<<")\t";
         std::cout<<"vel("<<speed.linear.x<<","<<speed.linear.y<<","<<speed.angular.z<<")\n";
+
+        // if(softStart % 1000 == 0)     clearScreen();
 
         return speed;
     }
