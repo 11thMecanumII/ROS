@@ -8,7 +8,8 @@ void clearScreen(){
 #endif
 }
 Mecanum::Mecanum(double x, double y, double theta):
-    odometry(x,y,theta), softStart(0), if_reach(false){};
+    odometry(x,y,theta), softStart(0), if_reach(true){};
+
 geometry_msgs::Twist Mecanum::goTo(double des_x, double des_y, double des_theta, double speed_Kp){
     geometry_msgs::Twist speed;
     double diff_x, diff_y, diff_theta;
@@ -21,10 +22,6 @@ geometry_msgs::Twist Mecanum::goTo(double des_x, double des_y, double des_theta,
     X = (std::abs(diff_x) > allowance)?std::abs(speed_Kp) * diff_x:0;
     Y = (std::abs(diff_y) > allowance)?std::abs(speed_Kp) * diff_y:0;
     W = (std::abs(diff_theta) > allowance)?std::abs(speed_Kp) * diff_theta:0;
-
-    if(X == 0 && Y == 0 && W == 0){
-        if_reach = true;
-    }        
 
     limit = (softStart < NSS)?(double)((double)softStart*maxSpeed)/NSS:maxSpeed;
     GS[0] = Y + X + W*centerDistance1;
@@ -48,15 +45,17 @@ geometry_msgs::Twist Mecanum::goTo(double des_x, double des_y, double des_theta,
 
     std::cout<<std::fixed<<std::setprecision(0);
     std::cout<<softStart<<"\t";
-    
     std::cout<<std::fixed<<std::setprecision(4);
     std::cout<<"limit:"<<limit<<"\t";
     std::cout<<"des("<<des_x<<","<<des_y<<","<<des_theta<<")\t";
     std::cout<<"odo("<<odometry.x<<","<<odometry.y<<","<<odometry.theta*180/PI<<")\t";
     std::cout<<"vel("<<speed.linear.x<<","<<speed.linear.y<<","<<speed.angular.z<<")\n";
 
+    maxGS = 0;
+    if(X == 0 && Y == 0 && W == 0)        if_reach = true;
     return speed;
 }
+
 int readPath(double* des_x_Ptr, double* des_y_Ptr, double* des_theta_Ptr, size_t& current_index){
     std::ifstream file(filePath);
     if (!file.is_open()) {
