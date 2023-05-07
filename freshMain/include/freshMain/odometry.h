@@ -13,7 +13,7 @@ private:
 public:
     Odometry(double _x, double _y, double _theta);
     double x, y, theta;
-    void update(const geometry_msgs::Twist::ConstPtr& ins_vel);
+    int update(const geometry_msgs::Twist::ConstPtr& ins_vel);
 };
 
 #endif

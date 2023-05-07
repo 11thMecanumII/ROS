@@ -15,7 +15,6 @@ Mecanum mecanum(0, 0, 90);
 
 void Callback(const geometry_msgs::Twist::ConstPtr& ins_vel){
     mecanum.odometry.update(ins_vel);
-    mecanum.softStart++;     //to sure it can do whole softStart;
 }
 
 void my_interrupt_handler(int gpio, int level, uint32_t tick) {
@@ -25,6 +24,7 @@ void my_interrupt_handler(int gpio, int level, uint32_t tick) {
     std::cout<<"------------------\n";
     
     vel_pub.publish( mecanum.goTo(des_x, des_y, des_theta, speed_Kp) );
+    mecanum.softStart++;
 }
 
 int main(int argc, char **argv){
