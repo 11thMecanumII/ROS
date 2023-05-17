@@ -14,6 +14,8 @@ public:
     Odometry(double _x, double _y, double _theta);
     double x, y, theta;
     void update(const geometry_msgs::Twist::ConstPtr& ins_vel);
+    void vel_Car2World();
+    void vel_Car2World();
 };
 
 #endif

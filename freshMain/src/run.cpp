@@ -23,7 +23,8 @@ int main(int argc, char **argv){
     ros::NodeHandle nh;
     ros::Publisher vel_pub = nh.advertise<geometry_msgs::Twist>("/cmd_vel", 1);
     ros::Subscriber pose_sub = nh.subscribe("/ins_vel",1,Callback);
-    while(ros::ok()){
+    ros::Rate rate(20); //20Hz
+    while(nh.ok()){
         if(readPath(&des_x, &des_y, &des_theta, current_index))     break;
         std::cout<<current_index<<" : \t";
         std::cout<<"("<<des_x<<"\t"<<des_y<<"\t"<<des_theta<<")\n";
@@ -31,11 +32,11 @@ int main(int argc, char **argv){
         if(current_index > numOfPoints)  break;
         if(des_x_last != des_x || des_y_last != des_y || des_theta_last != des_theta){
             mecanum.softStart = 0;
-            while(!mecanum.if_reach && ros::ok()){
+            while(!mecanum.if_reach && nh.ok()){
                 ros::spinOnce();
                 vel_pub.publish( mecanum.goTo(des_x, des_y, des_theta, speed_Kp) );
                 mecanum.maxGS = 0;
-                ros::Duration(0.02).sleep();    //50Hz
+                rate.sleep();
             }
             mecanum.if_reach = false;
             std::cout<<"\n\t\tarrive the ("<<current_index<<" th) destanation!\n\n";
