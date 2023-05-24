@@ -12,7 +12,6 @@
 #include <cstdlib>
 
 #define filePath "/home/ditrobotics/catkin_ws/src/freshMain/params/test123.yaml"
-// #define filePath "/home/ditrobotics/catkin_ws/src/freshMain/params/11project.yaml"
 
 #define allowance 10e-3
 #define NSS 50 //num_of_SoftStart

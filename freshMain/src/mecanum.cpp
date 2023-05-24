@@ -16,28 +16,30 @@ geometry_msgs::Twist Mecanum::goTo(double des_x, double des_y, double des_theta,
     diff_x = des_x - odometry.x;    
     diff_y = des_y - odometry.y;    
     diff_theta = (des_theta/180*PI) - odometry.theta;
-    while(std::abs(diff_theta) > PI)   diff_theta = (diff_theta > 0)?diff_theta - 2*PI:diff_theta + 2*PI;
+    while(std::fabs(diff_theta) > PI)   diff_theta = (diff_theta > 0)?diff_theta - 2*PI:diff_theta + 2*PI;
     
-    X = (std::abs(diff_x) > allowance)?std::abs(speed_Kp) * diff_x:0;
-    Y = (std::abs(diff_y) > allowance)?std::abs(speed_Kp) * diff_y:0;
-    W = (std::abs(diff_theta) > allowance)?std::abs(speed_Kp) * diff_theta:0;
+    X = (std::fabs(diff_x) > allowance)?std::fabs(speed_Kp) * diff_x:0;
+    Y = (std::fabs(diff_y) > allowance)?std::fabs(speed_Kp) * diff_y:0;
+    W = (std::fabs(diff_theta) > allowance)?std::fabs(speed_Kp) * diff_theta:0;
 
     if(X == 0 && Y == 0 && W == 0){
         if_reach = true;
     }        
 
     limit = (softStart < NSS)?(double)((double)softStart*maxSpeed)/NSS:maxSpeed;
-    GS[0] = Y + X + W*centerDistance1;
-    GS[1] = Y + X - W*centerDistance2;
-    GS[2] = Y - X + W*centerDistance3;
-    GS[3] = Y - X - W*centerDistance4;
+    double carX = odometry.vel_World2Car('x', X, Y);
+    double carY = odometry.vel_World2Car('y', X, Y);
+    GS[0] = carY + carX + W*0.5*(carWidth + carLength);
+    GS[1] = carY + carX - W*0.5*(carWidth + carLength);
+    GS[2] = carY - carX + W*0.5*(carWidth + carLength);
+    GS[3] = carY - carX - W*0.5*(carWidth + carLength);
     for(int i = 0; i < 4; i ++){
-        if(std::abs(GS[i]) > std::abs(maxGS)){
+        if(std::fabs(GS[i]) > std::fabs(maxGS)){
             maxGS = GS[i];
         }
     }
-    if(std::abs(maxGS) > limit){
-        scanRatio = limit / std::abs(maxGS);
+    if(std::fabs(maxGS) > limit){
+        scanRatio = (double) limit / std::fabs(maxGS);
         X *= scanRatio;
         Y *= scanRatio;
         W *= scanRatio;
@@ -51,8 +53,9 @@ geometry_msgs::Twist Mecanum::goTo(double des_x, double des_y, double des_theta,
     
     std::cout<<std::fixed<<std::setprecision(4);
     std::cout<<"limit:"<<limit<<"\t";
-    std::cout<<"des("<<des_x<<","<<des_y<<","<<des_theta<<")\t";
-    std::cout<<"odo("<<odometry.x<<","<<odometry.y<<","<<odometry.theta*180/PI<<")\t";
+    // std::cout<<"des("<<des_x<<","<<des_y<<","<<des_theta<<")\t";
+    // std::cout<<"odo("<<odometry.x<<","<<odometry.y<<","<<odometry.theta*180/PI<<")\t";
+    std::cout<<"car("<<carX<<","<<carY<<","<<W<<")\t";
     std::cout<<"vel("<<speed.linear.x<<","<<speed.linear.y<<","<<speed.angular.z<<")\n";
 
     return speed;

@@ -7,14 +7,18 @@
 
 #define numOfPoints 12
 
-double speed_Kp = 10, des_x, des_y, des_theta;
+double speed_Kp = 2, des_x, des_y, des_theta;
 double des_x_last = -1, des_y_last = -1, des_theta_last = -1;
 size_t current_index = 0;
 
 Mecanum mecanum(0, 0, 90);
 
 void Callback(const geometry_msgs::Twist::ConstPtr& ins_vel){
-    mecanum.odometry.update(ins_vel);
+    // mecanum.odometry.update(ins_vel);
+    mecanum.odometry.x = ins_vel->angular.x;
+    
+    mecanum.odometry.y = ins_vel->angular.y;
+    mecanum.odometry.theta = ins_vel->linear.z;
     mecanum.softStart++;     //to sure it can do whole softStart;
 }
 

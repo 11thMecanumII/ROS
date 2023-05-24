@@ -3,8 +3,11 @@
 
 #include "ros/ros.h"
 #include "geometry_msgs/Twist.h"
+#include <math.h>
 #define PI 3.1415926
 #define wheelRadius 0.0498      //m
+#define carWidth 0.23704           //m
+#define carLength 0.196          //m
 
 class Odometry{
 private:
@@ -14,8 +17,8 @@ public:
     Odometry(double _x, double _y, double _theta);
     double x, y, theta;
     void update(const geometry_msgs::Twist::ConstPtr& ins_vel);
-    void vel_Car2World();
-    void vel_Car2World();
+    double vel_World2Car(char coor, double Vx_world, double Vy_world);
+    // void vel_Car2World();
 };
 
 #endif
