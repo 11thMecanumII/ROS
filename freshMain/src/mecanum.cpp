@@ -29,6 +29,7 @@ geometry_msgs::Twist Mecanum::goTo(double des_x, double des_y, double des_theta,
     limit = (softStart < NSS)?(double)((double)softStart*maxSpeed)/NSS:maxSpeed;
     double carX = odometry.vel_World2Car('x', X, Y);
     double carY = odometry.vel_World2Car('y', X, Y);
+    double carW = W;
     GS[0] = carY + carX + W*0.5*(carWidth + carLength);
     GS[1] = carY + carX - W*0.5*(carWidth + carLength);
     GS[2] = carY - carX + W*0.5*(carWidth + carLength);
@@ -50,13 +51,15 @@ geometry_msgs::Twist Mecanum::goTo(double des_x, double des_y, double des_theta,
 
     std::cout<<std::fixed<<std::setprecision(0);
     std::cout<<softStart<<"\t";
-    
     std::cout<<std::fixed<<std::setprecision(4);
+    std::cout<<"scanRatio: "<<scanRatio<<"\t";
     std::cout<<"limit:"<<limit<<"\t";
     // std::cout<<"des("<<des_x<<","<<des_y<<","<<des_theta<<")\t";
     // std::cout<<"odo("<<odometry.x<<","<<odometry.y<<","<<odometry.theta*180/PI<<")\t";
-    std::cout<<"car("<<carX<<","<<carY<<","<<W<<")\t";
-    std::cout<<"vel("<<speed.linear.x<<","<<speed.linear.y<<","<<speed.angular.z<<")\n";
+    std::cout<<"car("<<carX<<","<<carY<<","<<carW<<")\t";
+    std::cout<<"vel("<<speed.linear.x<<","<<speed.linear.y<<","<<speed.angular.z<<")\t";
+    carX *= scanRatio;  carY *= scanRatio;  carW *= scanRatio;
+    std::cout<<"car2("<<carX<<","<<carY<<","<<carW<<")\n";
 
     return speed;
 }
