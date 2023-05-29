@@ -54,12 +54,9 @@ geometry_msgs::Twist Mecanum::goTo(double des_x, double des_y, double des_theta,
     std::cout<<std::fixed<<std::setprecision(4);
     std::cout<<"scanRatio: "<<scanRatio<<"\t";
     std::cout<<"limit:"<<limit<<"\t";
-    // std::cout<<"des("<<des_x<<","<<des_y<<","<<des_theta<<")\t";
-    // std::cout<<"odo("<<odometry.x<<","<<odometry.y<<","<<odometry.theta*180/PI<<")\t";
-    std::cout<<"car("<<carX<<","<<carY<<","<<carW<<")\t";
+    std::cout<<"des("<<des_x<<","<<des_y<<","<<des_theta<<")\t";
+    std::cout<<"odo("<<odometry.x<<","<<odometry.y<<","<<odometry.theta*180/PI<<")\t";
     std::cout<<"vel("<<speed.linear.x<<","<<speed.linear.y<<","<<speed.angular.z<<")\t";
-    carX *= scanRatio;  carY *= scanRatio;  carW *= scanRatio;
-    std::cout<<"car2("<<carX<<","<<carY<<","<<carW<<")\n";
 
     return speed;
 }

@@ -16,15 +16,8 @@ void Odometry::update(const geometry_msgs::Twist::ConstPtr& ins_vel){
     return;
 }
 double Odometry::vel_World2Car(char coor, double Vx_world, double Vy_world){
-	double coff = 1/ cos(2 * theta);
 	if(coor == 'x')
-		return coff * (Vy_world * cos(theta) - Vx_world * sin(theta));
+        return Vx_world * cos(theta) - Vy_world * sin(theta);
 	else
-		return coff * (Vx_world * cos(theta) - Vy_world * sin(theta));
+		return Vx_world * cos(theta) + Vy_world * sin(theta);
 }
-// double vel_Car2World(char coor, double Vx, double Vy){
-// 	if(coor == 'x')
-// 		return Vx * sin( odom.theta ) + Vy * cos( odom.theta );
-// 	else
-// 		return Vx * cos( odom.theta ) + Vy * sin( odom.theta );
-// }

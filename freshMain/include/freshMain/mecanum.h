@@ -11,12 +11,13 @@
 #include <iomanip>
 #include <cstdlib>
 
+// #define filePath "/home/ditrobotics/catkin_ws/src/freshMain/params/test123.yaml"
 #define filePath "/home/ditrobotics/catkin_ws/src/freshMain/params/test123.yaml"
 
 #define allowance 10e-3
-#define NSS 50 //num_of_SoftStart
+#define NSS 15 //num_of_SoftStart
 #define maxSpeed_true 1.5645    //m/s
-#define maxSpeed_choose 0.2
+#define maxSpeed_choose 1.5645
 #define centerDistance1 0.152767
 #define centerDistance2 0.152844
 #define centerDistance3 0.152998

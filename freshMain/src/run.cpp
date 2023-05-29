@@ -5,9 +5,9 @@
 #include "odometry.h"
 #include "mecanum.h"
 
-#define numOfPoints 12
+#define numOfPoints 20
 
-double speed_Kp = 2, des_x, des_y, des_theta;
+double speed_Kp = 1, des_x, des_y, des_theta;
 double des_x_last = -1, des_y_last = -1, des_theta_last = -1;
 size_t current_index = 0;
 
