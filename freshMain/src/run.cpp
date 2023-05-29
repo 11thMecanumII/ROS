@@ -16,7 +16,6 @@ Mecanum mecanum(0, 0, 90);
 void Callback(const geometry_msgs::Twist::ConstPtr& ins_vel){
     // mecanum.odometry.update(ins_vel);
     mecanum.odometry.x = ins_vel->angular.x;
-    
     mecanum.odometry.y = ins_vel->angular.y;
     mecanum.odometry.theta = ins_vel->linear.z;
     mecanum.softStart++;     //to sure it can do whole softStart;
@@ -33,7 +32,7 @@ int main(int argc, char **argv){
         if(readPath(&des_x, &des_y, &des_theta, current_index))     break;
         std::cout<<current_index<<" : \t";
         std::cout<<"("<<des_x<<"\t"<<des_y<<"\t"<<des_theta<<")\n";
-        ros::Duration(1.0).sleep(); // Sleep for 1 second
+        // ros::Duration(1.0).sleep(); // Sleep for 1 second
         if(current_index > numOfPoints)  break;
         if(des_x_last != des_x || des_y_last != des_y || des_theta_last != des_theta){
             mecanum.softStart = 0;
@@ -45,7 +44,7 @@ int main(int argc, char **argv){
             }
             mecanum.if_reach = false;
             std::cout<<"\n\t\tarrive the ("<<current_index<<" th) destanation!\n\n";
-            ros::Duration(1.0).sleep(); // Sleep for 1 second
+            // ros::Duration(1.0).sleep(); // Sleep for 1 second
             clearScreen();
         }
         des_x_last = des_x;
