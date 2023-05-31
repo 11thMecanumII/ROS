@@ -21,3 +21,9 @@ double Odometry::vel_World2Car(char coor, double Vx_world, double Vy_world){
 	else
 		return Vx_world * cos(theta) + Vy_world * sin(theta);
 }
+double Odometry::vel_Car2World(char coor, double Vx, double Vy){
+	if(coor == 'x')
+		return Vx * sin(theta) + Vy * cos(theta);
+	else
+		return Vy * sin(theta) - Vx * cos(theta);
+}

@@ -18,6 +18,7 @@ public:
     double x, y, theta;
     void update(const geometry_msgs::Twist::ConstPtr& ins_vel);
     double vel_World2Car(char coor, double Vx_world, double Vy_world);
+    double vel_Car2World(char coor, double Vx, double Vy);
     // void vel_Car2World();
 };
 
