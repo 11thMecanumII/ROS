@@ -49,6 +49,8 @@ geometry_msgs::Twist Mecanum::goTo(double des_x, double des_y, double des_theta,
     X = (double) X * scanRatio;
     Y = (double) Y * scanRatio;
     W = (double) W * scanRatio;
+
+    
     speed.linear.x = X;
     speed.linear.y = Y;
     speed.angular.z = W;
