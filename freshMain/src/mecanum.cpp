@@ -46,21 +46,17 @@ geometry_msgs::Twist Mecanum::goTo(double des_x, double des_y, double des_theta,
     else{
         scanRatio = 1;
     }
-    X = (double) X * scanRatio;
-    Y = (double) Y * scanRatio;
-    W = (double) W * scanRatio;
-
     
-    speed.linear.x = X;
-    speed.linear.y = Y;
-    speed.angular.z = W;
+    speed.linear.x = (double) carX * scanRatio;
+    speed.linear.y = (double) carY * scanRatio;
+    speed.angular.z = (double) carW * scanRatio;
 
-    // std::cout<<std::fixed<<std::setprecision(0);
-    // std::cout<<softStart<<"\t";
+    std::cout<<std::fixed<<std::setprecision(0);
+    std::cout<<softStart<<"\t";
     std::cout<<std::fixed<<std::setprecision(4);
     // std::cout<<"scanRatio: "<<scanRatio<<"\t";
     // std::cout<<"maxGS: "<<maxGS<<"\t";
-    std::cout<<"["<<carX<<" "<<carY<<" "<<carW<<"]";
+    std::cout<<"["<<speed.linear.x<<" "<<speed.linear.y<<" "<<speed.angular.z<<"]";
     std::cout<<"\n";
     // std::cout<<GS[0]<<" "<<GS[1]<<" "<<GS[2]<<" "<<GS[3]<<"\n";
 
@@ -88,8 +84,8 @@ int readPath(double* des_x_Ptr, double* des_y_Ptr, double* des_theta_Ptr, size_t
     int i = -1;
     for (auto twistElement : pathConfig) {
         auto twist = twistElement["twist"];
-        *des_x_Ptr = twist[0].as<double>();
-        *des_y_Ptr = twist[1].as<double>();
+        *des_x_Ptr = (double)twist[0].as<double>() * mapScanRatio;
+        *des_y_Ptr = (double)twist[1].as<double>() * mapScanRatio;
         *des_theta_Ptr = twist[2].as<double>();
         if(++i == current_index)  break;
     }

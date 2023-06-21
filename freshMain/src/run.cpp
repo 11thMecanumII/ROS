@@ -41,7 +41,7 @@ int main(int argc, char **argv){
                 mecanum.maxGS = 0.0;
                 rate.sleep();
 
-                ros::Duration(0.3).sleep(); // Sleep for 0.3 second
+                // ros::Duration(0.3).sleep(); // Sleep for 0.3 second
             }
             mecanum.if_reach = false;
             std::cout<<"\n\t\tarrive the ("<<current_index<<" th) destanation!\n\n";
