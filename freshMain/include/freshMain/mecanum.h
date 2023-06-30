@@ -16,7 +16,7 @@
 #define allowance 10e-4
 #define NSS 50 //num_of_SoftStart
 #define maxSpeed_true 1.5645    //m/s
-#define maxSpeed_choose 0.8
+#define maxSpeed_choose 0.6
 #define mapScanRatio 0.01
 // #define centerDistance1 0.152767
 // #define centerDistance2 0.152844
